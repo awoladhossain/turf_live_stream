@@ -34,4 +34,12 @@ type OutgoingMessage struct {
 	Timestamp time.Time   `json:"timestamp"`
 }
 
-type Stream struct{}
+type Stream struct {
+	ID          string    `json:"id"`
+	Title       string    `json:"title"`
+	TurfID      string    `json:"turfId"`
+	Status      string    `json:"status"` // SCHEDULED, LIVE, ENDED
+	HLSUrl      string    `json:"hlsUrl"`
+	ViewerCount int       `json:"viewerCount"`
+	StartedAt   time.Time `json:"startedAt,omitempty"`
+}
