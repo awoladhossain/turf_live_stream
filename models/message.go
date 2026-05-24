@@ -43,3 +43,10 @@ type Stream struct {
 	ViewerCount int       `json:"viewerCount"`
 	StartedAt   time.Time `json:"startedAt,omitempty"`
 }
+
+// Authenticated user info
+type AuthUser struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Role string `json:"role"`
+}
