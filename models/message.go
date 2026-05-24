@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // message types
 type MessageType string
 
@@ -19,3 +21,17 @@ type IncomingMessage struct {
 	Content  string      `json:"content,omitempty"`
 	Reaction string      `json:"reaction,omitempty"`
 }
+
+type OutgoingMessage struct {
+	Type      MessageType `json:"type"`
+	StreamID  string      `json:"streamId,omitempty"`
+	UserID    string      `json:"userId,omitempty"`
+	UserName  string      `json:"userName,omitempty"`
+	Content   string      `json:"content,omitempty"`
+	Reaction  string      `json:"reaction,omitempty"`
+	Count     int         `json:"count,omitempty"`
+	Status    string      `json:"status,omitempty"`
+	Timestamp time.Time   `json:"timestamp"`
+}
+
+type Stream struct{}
