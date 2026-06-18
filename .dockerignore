@@ -1,0 +1,9 @@
+.git
+.gitignore
+.env
+hls/
+*/hls
+*.log
+tmp/
+bin/
+README.md

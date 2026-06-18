@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  streaming-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: turfbook_streaming_dev
+    ports:
+      - "8080:8080"
+      - "1935:1935"
+    environment:
+      - PORT=8080
+      - RTMP_PORT=1935
+      - REDIS_URL=redis://redis-dev:6379/0
+      - JWT_SECRET=same-as-nestjs-jwt-secret
+      - NESTJS_URL=http://host.docker.internal:3000
+      - HLS_OUTPUT_DIR=/app/hls
+      - FFMPEG_PATH=ffmpeg
+    volumes:
+      - .:/app
+      - hls_data:/app/hls
+    depends_on:
+      - redis-dev
+
+  redis-dev:
+    image: redis:7-alpine
+    container_name: turfbook_redis_dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  hls_data:
+  redis_data:
