@@ -1,3 +1,5 @@
+// Package handlers provides HTTP and WebSocket request handlers
+// for the turfbook-streaming service endpoints.
 package handlers
 
 import (
@@ -7,7 +9,8 @@ import (
 	"time"
 )
 
-func HealthCheck(w http.ResponseWriter, r *http.Request) {
+// HealthCheck responds with the current service health status in JSON format.
+func HealthCheck(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(map[string]interface{}{
 		"status":    "ok",

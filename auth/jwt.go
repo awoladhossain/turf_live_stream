@@ -1,9 +1,12 @@
+// Package auth provides JWT authentication utilities for verifying
+// tokens issued by the NestJS backend service.
 package auth
 
 import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// Claims represents the JWT claims structure matching the NestJS backend token format.
 type Claims struct {
 	Sub   string `json:"sub"`
 	Email string `json:"email"`

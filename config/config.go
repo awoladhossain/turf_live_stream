@@ -1,3 +1,5 @@
+// Package config handles application configuration loading from
+// environment variables and .env files using godotenv.
 package config
 
 import (
@@ -7,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Config holds all application configuration values loaded from environment variables.
 type Config struct {
 	Port         string
 	RTMPPort     string
@@ -17,6 +20,7 @@ type Config struct {
 	FFmpegPath   string
 }
 
+// App is the global application configuration instance, initialized by Load.
 var App *Config
 
 func getEnv(key, fallback string) string {
@@ -26,6 +30,8 @@ func getEnv(key, fallback string) string {
 	return fallback
 }
 
+// Load reads environment variables from .env file (if present) and
+// populates the global App config. Falls back to defaults when variables are not set.
 func Load() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("NO .env file found-using evironment variable")
