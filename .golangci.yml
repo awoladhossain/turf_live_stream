@@ -1,4 +1,5 @@
 # .golangci.yml
+# Compatible with golangci-lint v2
 version: "2"
 
 run:
@@ -6,16 +7,15 @@ run:
 
 linters:
   enable:
-    - errcheck
-    - govet
-    - staticcheck
-    - unused
-    - gosimple
-    - revive
+    - errcheck       # Checks for unchecked errors in Go code
+    - govet          # Reports suspicious constructs (go vet)
+    - staticcheck    # Comprehensive static analysis (includes gosimple + stylecheck)
+    - unused         # Checks for unused constants, variables, functions, and types
+    - revive         # Fast, configurable, extensible Go linter (replaces golint)
 
 formatters:
   enable:
-    - goimports
+    - goimports      # Manages import grouping and formatting
 
 issues:
   max-issues-per-linter: 0
