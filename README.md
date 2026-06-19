@@ -2,22 +2,25 @@
 
 Turfbook Streaming is a Go-based backend service for live turf streaming features. The project is structured for HTTP health checks, stream handling, WebSocket-based live communication, JWT authentication, Redis support, and FFmpeg/HLS based video processing.
 
-> Note: This repository is currently an early scaffold. Some packages are placeholders, but the config loader, health handler, and message models are already present.
-
 ## Features
 
 - Go backend service for live streaming workflows
 - Environment based configuration using `.env`
-- Health check endpoint support
+- Health check endpoint support with JSON response
 - WebSocket message model for chat, reactions, viewer count, stream status, ping, and pong
-- JWT authentication package placeholder
+- JWT authentication package and verification claims
 - Redis configuration support
 - FFmpeg and HLS output configuration support
 - NestJS backend integration URL support
+- **Production-Ready Enhancements:**
+  - **Graceful Shutdown:** Handles OS signals (`SIGINT`, `SIGTERM`) to cleanly shut down HTTP server connections.
+  - **Structured Logging (`slog`):** Outputs text logs in development and structured JSON logs in production.
+  - **Task Automation (`Makefile`):** Easy commands for development, testing, formatting, and dockerized linting.
+  - **CI/CD Pipeline:** Fully configured GitHub Actions workflow that compiles and runs `golangci-lint` v2 and executes tests on Go 1.26.3.
 
 ## Tech Stack
 
-- Go
+- Go (1.26.3)
 - Gorilla Mux
 - Gorilla WebSocket
 - Go Redis
@@ -30,24 +33,29 @@ Turfbook Streaming is a Go-based backend service for live turf streaming feature
 
 ```text
 .
+├── .github/workflows/    # CI/CD pipelines (GitHub Actions)
 ├── auth/                 # JWT/auth related logic
 ├── config/               # Application configuration loader
 ├── handlers/             # HTTP/WebSocket/stream handlers
 ├── hub/                  # WebSocket client and hub management
 ├── middleware/           # Auth and rate limit middleware
 ├── models/               # Shared request/response/message models
-├── Dockerfile            # Docker build file, currently empty
+├── Dockerfile            # Docker build file (Multi-stage build)
+├── docker-compose.dev.yml# Docker compose for local development
+├── docker-compose.prod.yml# Docker compose for production
+├── Makefile              # Automation script for local commands
 ├── go.mod                # Go module definition
 ├── go.sum                # Go dependency lock file
-└── main.go               # Application entry point scaffold
+└── main.go               # Application entry point with graceful shutdown & slog
 ```
 
 ## Requirements
 
-- Go version defined in `go.mod`
+- Go version defined in `go.mod` (Go 1.26.3)
 - Redis, if Redis-backed features are enabled
 - FFmpeg, if live stream to HLS conversion is enabled
 - A NestJS backend service, if this service needs to sync stream metadata with the main API
+- Docker & Docker Compose (for running containers)
 
 ## Environment Variables
 
@@ -81,41 +89,73 @@ FFMPEG_PATH=ffmpeg
 go mod download
 ```
 
-## Development
+## Development and Automation
 
-Run tests:
+All tasks are automated using the `Makefile` in the root directory.
+
+### Common Local Commands
+
+- **Run Hot-Reload Server (Air):**
+  ```bash
+  make dev
+  ```
+- **Run Tests:**
+  ```bash
+  make test
+  ```
+- **Format Code:**
+  ```bash
+  make fmt
+  ```
+- **Compile Application:**
+  ```bash
+  make build
+  ```
+- **Clean Build Artifacts and HLS output:**
+  ```bash
+  make clean
+  ```
+
+### Running the Linter (golangci-lint v2)
+
+Since local installation of `golangci-lint` v2 may vary, you can run the exact configuration inside a Docker container:
+```bash
+make lint
+```
+
+---
+
+## Docker Environments
+
+### Local Development (with Hot-Reload & Redis Container)
+
+To spin up the application with a hot-reload container volume-mounted to your local files along with a local Redis container:
 
 ```bash
-go test ./...
+make docker-dev-up
 ```
 
-If your environment has a read-only Go build cache, use a writable cache directory:
+To stop the dev containers:
+```bash
+make docker-dev-down
+```
+
+### Production Release (Multi-Stage Build)
+
+To build and run the production-optimized image:
 
 ```bash
-GOCACHE=/tmp/turfbook-go-cache go test ./...
+make docker-prod-up
 ```
 
-Run formatting:
-
+To stop production containers:
 ```bash
-go fmt ./...
+make docker-prod-down
 ```
 
-## Running The Server
+---
 
-The repository currently contains the service scaffold, but `main.go` is not yet wired as a runnable `package main` HTTP server. After the server bootstrap is implemented, the expected local command will be:
-
-```bash
-go run .
-```
-
-Expected base URL:
-
-```text
-http://localhost:8080
-```
-
-## Current Endpoint
+## Endpoints
 
 ### Health Check
 
@@ -131,7 +171,7 @@ Response shape:
 {
   "status": "ok",
   "service": "turfbook-streaming",
-  "timestamp": "2026-05-25T00:00:00Z"
+  "timestamp": "2026-06-19T11:28:47Z"
 }
 ```
 
@@ -184,15 +224,6 @@ GET  /hls/{streamId}/index.m3u8
 6. Viewers watch the HLS stream from the app.
 7. WebSocket channel handles chat, reactions, viewer count, and stream status updates.
 
-## Docker
-
-`Dockerfile` exists but is currently empty. After Docker setup is added, the expected workflow will be:
-
-```bash
-docker build -t turfbook-streaming .
-docker run --env-file .env -p 8080:8080 -p 1935:1935 turfbook-streaming
-```
-
 ## Production Notes
 
 - Use a strong `JWT_SECRET`.
@@ -207,10 +238,10 @@ docker run --env-file .env -p 8080:8080 -p 1935:1935 turfbook-streaming
 ## Development Status
 
 - `config.Load()` is implemented.
-- `handlers.HealthCheck()` is implemented.
-- `models.IncomingMessage` and message type constants are implemented.
+- `handlers.HealthCheck()` is implemented with error checking.
+- `models.IncomingMessage` and message type constants are fully documented and implemented.
+- `Dockerfile`, `docker-compose.dev.yml`, `docker-compose.prod.yml`, and `Makefile` are implemented.
 - `auth`, `hub`, `stream`, `websocket`, and middleware files are currently placeholders.
-- `Dockerfile` is currently empty.
 
 ## License
 
