@@ -3,8 +3,6 @@ version: "2"
 
 run:
   timeout: 5m
-  issues-exit-code: 1
-  tests: true
 
 linters:
   enable:
@@ -13,8 +11,11 @@ linters:
     - staticcheck
     - unused
     - gosimple
-    - goimports
     - revive
+
+formatters:
+  enable:
+    - goimports
 
 issues:
   max-issues-per-linter: 0
