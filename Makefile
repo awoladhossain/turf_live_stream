@@ -35,7 +35,7 @@ docker-prod-down:
 
 # Run golangci-lint inside a Docker container (avoids local installation)
 lint:
-	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.61.0 golangci-lint run -v
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:latest golangci-lint run -v
 
 # Clean temporary files and build artifacts
 clean:
