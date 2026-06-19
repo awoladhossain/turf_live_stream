@@ -20,10 +20,11 @@ jobs:
           go-version: '1.26.3'
           cache: true
 
+      - name: Install golangci-lint
+        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: latest
+        run: $(go env GOPATH)/bin/golangci-lint run -v
 
       - name: Run Tests
         run: go test -v -race -coverprofile=coverage.out ./...
