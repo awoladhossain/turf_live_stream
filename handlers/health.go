@@ -1,5 +1,3 @@
-// Package handlers provides HTTP and WebSocket request handlers
-// for the turfbook-streaming service endpoints.
 package handlers
 
 import (

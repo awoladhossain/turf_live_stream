@@ -1,11 +1,8 @@
-// Package config handles application configuration loading from
-// environment variables and .env files using godotenv.
 package config
 
 import (
 	"log"
 	"os"
-
 	"github.com/joho/godotenv"
 )
 

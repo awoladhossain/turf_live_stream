@@ -1,10 +1,7 @@
-// Package models defines shared data structures for WebSocket messages,
-// stream metadata, and authenticated user information.
 package models
 
 import "time"
 
-// MessageType represents the type of WebSocket message exchanged between client and server.
 type MessageType string
 
 // Supported WebSocket message types for the live streaming chat and control protocol.

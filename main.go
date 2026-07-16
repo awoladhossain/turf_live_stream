@@ -1,5 +1,3 @@
-// Package main is the entry point for the turfbook-streaming service,
-// providing live stream ingestion, HLS output, and WebSocket-based chat.
 package main
 
 import (

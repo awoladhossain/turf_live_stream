@@ -1,5 +1,3 @@
-// Package auth provides JWT authentication utilities for verifying
-// tokens issued by the NestJS backend service.
 package auth
 
 import (
